@@ -145,6 +145,14 @@ func (board *Board) eraseLine(mutex *sync.Mutex) {
         board.Blocks[i][j].Active = false
         board.Blocks[i][j].FigureId -= 1
       }
+      for k := i - 1; k >= 0; k-- {
+        for j, block := range board.Blocks[k] {
+          if block.Active && block.FigureId < board.FigureFallingId {
+            board.Blocks[k][j].Active = false
+            board.Blocks[k + 1][j].Active = true
+          }
+        }
+      }
       board.InitFigures()
     }
   }
